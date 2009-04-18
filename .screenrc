@@ -1,0 +1,35 @@
+# ~/.screenrc
+term screen-256color
+startup_message off
+shell -$SHELL
+# load some apps ( last listed will be focused )
+screen -t spec 0 bash
+screen -t workspace 1 bash
+#screen -t mpc 4 ncmpc
+#screen -t email 5 mutt
+hardstatus on
+altscreen on
+hardstatus lastline '%H: %-Lw%34>[%n*%f %t]%+Lw'
+defscrollback 1024
+termcapinfo rxvt-unicoe 'hs:ts=\E]2;:fs=\007:ds=\E]2;screen\007'
+termcapinfo rxvt* WS=\E[8;%d;%dt
+termcapinfo rxvt* ti@:te@:G0
+termcapinfo rxvt* hs:ts=\E]2;:fs=\007:ds=\E]2;8)\007
+termcapinfo rxvt* XT
+termcapinfo linux C8
+termcapinfo rxvt* "" *7=\E[8$:%i=\E[c:#4=\E[d:#2=\E[7$
+defflow off
+windowlist string "%3n %{= dd}%?%h%:%t%?%=%f%{-}"
+caption    string "%?%F%{y}%?%3n %{= wk}%?%h%:%t%?%{-}"
+activity "Activity in window %n (%t)^G^G"
+bell_msg "Bell in window %n (%t)^G"
+
+bind  j next
+bind ^J next
+bind  k prev
+bind ^K prev
+bind  K kill
+bind  ` select 0
+bind  e screen -ln vim
+bind ^E screen -ln vim
+bind m screen -t 'mutt' mutt

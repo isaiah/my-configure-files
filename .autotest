@@ -1,0 +1,128 @@
+#!/usr/bin/env ruby
+module Autotest::Naughty
+  ERROR_ICON = '/home/isaiah/.config/awesome/icons/fail.png'
+  SUCCESS_ICON = '/home/isaiah/.config/awesome/icons/pass.png'
+  TIMEOUT = 3
+  POSITION = 'bottom_right'
+  def self.naughty_nofity icon, title, message
+    options = "timeout=#{TIMEOUT},fg='#EFEFEF',bg='#3579A8', border_color='#3579A8',position='#{POSITION}'"
+    system "echo \"naughty.notify({#{options}, title='#{title}', text='#{message}', icon='#{icon}'})\" | awesome-client -"
+  end
+
+  Autotest.add_hook :red do |at|
+    failed_tests = at.files_to_test.inject(0){ |s,a| k,v = a;  s + v.size}
+    #errors = at.files_to_test.map { |k, v| "#{k}:\n #{v.join("\n ")}"}.join("\n\n")
+    naughty_nofity ERROR_ICON, "Tests Failed:", "#{failed_tests} tests failed"
+  end
+
+  Autotest.add_hook :green do |at|
+    #results = at.results[/\d+ tests *$/]
+    naughty_nofity SUCCESS_ICON, "Test Results:", "All Passed!"
+  end
+end
+#  module Autotest::GnomeNotify
+#    EXPIRATION_IN_SECONDS = 2
+#    ERROR_STOCK_ICON = "gtk-dialog-error"
+#    SUCCESS_STOCK_ICON = "gtk-dialog-into"
+#
+#    def self.notify stock_icon, title, message
+#      options = "-t #{EXPIRATION_IN_SECONDS * 1000} -i #{stock_icon}"
+#      system "notify-send #{options} '#{title}' '#{message}'"
+#    end
+#
+#    Autotest.add_hook :red do |at|
+#      notify ERROR_STOCK_ICON, "Tests failed", "#{at.files_to_test.size} tests failed"
+#    end
+#
+#    Autotest.add_hook :green do |at|
+#      notify SUCCESS_STOCK_ICON, "All tests passed, good job!", ""
+#    end
+#  end
+#require 'autotest/wmii'
+=begin
+module Autotest::WMII
+  BARNAME = "009_autotest"
+  system "wmiir create /rbar/#{BARNAME}"
+  @current_message = ""
+
+  def self.colors(type)
+    {
+      :red   => "#ffffff #A02020 #FF0000",
+      :green => "#ffffff #20A020 #00FF00",
+      :info  => "#bbbbbb #222222 #000000"
+    }[type] || "#bbbbbb #222222 #000000"
+  end
+
+  at_exit { system "wmiir remove /rbar/#{BARNAME}" }
+
+  def self.popup(text)
+    IO.popen("xmessage -file -", "w"){|f| f.puts text; f.close_write }
+  end
+
+  def self.show_bar(title, msg, type = :info)
+    @current_message = msg
+    system "echo -n '#{colors(type)}' '#{title}' | wmiir write /rbar/#{BARNAME}"
+    #system "echo -n '#{title}' | wmiir write /rbar/#{BARNAME}/data"
+    #system "echo -n '#{colors(type)}' | wmiir write /rbar/#{BARNAME}/colors"
+  end
+
+  Autotest.add_hook :run do  |at|
+    show_bar "Run", "Run" unless $TESTING
+  end
+
+  require 'pp'
+  Autotest.add_hook :red do |at|
+    failed_tests = at.files_to_test.inject(0){ |s,a| k,v = a;  s + v.size}
+    msg = " #{failed_tests} tests failed. I will rerun these files: #{at.files_to_test.pretty_inspect} ==== #{at.results}"
+    show_bar "#{failed_tests} failed", msg, :red
+    #show_bar "#{msg}", msg, :red
+  end
+
+  Autotest.add_hook :green do |at|
+    msg = " Tests passed ==== #{at.results}"
+    show_bar "OK", msg, :green #if at.tainted
+  end
+
+  Autotest.add_hook :run do |at|
+    show_bar "starting", "autotest starting", :info unless $TESTING
+  end
+
+  Autotest.add_hook :interrupt do |at|
+    show_bar "reset", "autotest reset", :info unless $TESTING
+  end
+
+  Autotest.add_hook :quit do |at|
+    show_bar "exiting", "autotest leaving", :info unless $TESTING
+  end
+
+  Autotest.add_hook :all do |at|_hook
+    show_bar "ALL OK", "autotest: everything OK", :green unless $TESTING
+  end
+
+=begin
+  mypid = Process.pid
+  Thread.abort_on_exception = true
+  Thread.new do
+    open("|wmiir read /event") do |is|
+      loop do
+        line = is.gets
+        if md = /^BarClick #{BARNAME} (\d)/.match(line)
+          case md[1].to_i
+          when 1
+            popup(@current_message)
+          when 3
+            Process.kill("INT", mypid)
+          when 2
+            #system "wmiir remove /bar/#{BARNAME}"
+            Process.kill("HUP", mypid)
+            Process.kill("HUP", Process.pid) # jisatsu
+          end
+        end
+      end
+    end
+  end
+end
+=end
+
+require 'autotest/redgreen'
+require 'autotest/menu'
