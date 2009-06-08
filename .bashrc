@@ -16,7 +16,9 @@ fi
 
 PS1="\[\033[1;36m\]\t \w$\[\033[32m\] "
 alias ls="ls --color=auto"
-alias v="vim"
+alias gc="git commit -a -m"
+alias gp="git pull"
+alias v="vim +NERDTree"
 alias fm="vifm"
 alias ss="script/server"
 alias sc="script/console"
