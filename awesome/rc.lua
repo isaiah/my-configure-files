@@ -15,7 +15,7 @@ loadfile(awful.util.getdir("config").."/functions.lua")()
 -- {{{ Variable definitions
 -- Themes define colours, icons, and wallpapers
 -- The default is a dark theme
-theme_path = "/home/isaiah/.config/awesome/themes/stxza-blue"
+theme_path = "/home/isaiah/.config/awesome/themes/default/theme.lua"
 -- Uncommment this for a lighter theme
 -- theme_path = "/usr/share/awesome/themes/sky/theme"
 
@@ -25,7 +25,7 @@ beautiful.init(theme_path)
 -- This is used later as the default terminal and editor to run.
 -- terminal = "xterm"
 terminal = "urxvt"
-editor = os.getenv("EDITOR") or "nano"
+editor = os.getenv("EDITOR") or "vim"
 editor_cmd = terminal .. " -e " .. editor
 
 -- Default modkey.
@@ -34,6 +34,7 @@ editor_cmd = terminal .. " -e " .. editor
 -- I suggest you to remap Mod4 to another key using xmodmap or other tools.
 -- However, you can use another modifier like Mod1, but it may interact with others.
 modkey = "Mod4"
+AWESOME_RELEASE = "AWESOME FOR ARCHLINUX"
 alt    = "Mod1"
 control= "Control"
 
@@ -62,17 +63,19 @@ floatapps =
     ["MPlayer"] = true,
     ["pinentry"] = true,
     ["gimp"] = true,
+    ["tilda"] = true,
     -- by instance
-    ["mocp"] = true
+    ["mocp"] = true,
+    ["DownThemAll"] = true
 }
 
 -- Applications to be moved to a pre-defined tag by class or instance.
 -- Use the screen and tags indices.
 apptags =
 {
-    ["Firefox"] = { screen = 1, tag = 2 },
+    ["Shiretoko"] = { screen = 1, tag = 2 },
     ["Pidgin"] = { screen = 1, tag = 4 },
-    ["Stardict"] = { screen = 1, tag = 5}
+    ["stardict"] = { screen = 1, tag = 5}
     -- ["mocp"] = { screen = 2, tag = 4 },
 }
 
@@ -230,7 +233,7 @@ memwidget = widget({ type = "textbox", name = "memwidget", align = "right"})
 memInfo()
 -- Create the WIFI widget
 wifiwidget = widget({ type = "textbox", name = "wifiwidget", align = "right" })
-wifiInfo("wlan0");
+-- wifiInfo("wlan0");
 -- Create battery widget
 batterywidget = widget({ type = "textbox", name = "batterywidget", align = "right" })
 batteryInfo("BAT0");
@@ -322,7 +325,7 @@ mytasklist.buttons = { button({ }, 1, function (c)
 
 for s = 1, screen.count() do
     -- Create a promptbox for each screen
-    mypromptbox[s] = widget({ type = "textbox", align = "left" })
+    mypromptbox[s] = awful.widget.prompt({ align = "left" })
     -- Create an imagebox widget which will contains an icon indicating which layout we're using.
     -- We need one layoutbox per screen.
     mylayoutbox[s] = widget({ type = "imagebox", align = "right" })
@@ -341,11 +344,19 @@ for s = 1, screen.count() do
     -- Create the wibox
     mywibox[s] = wibox({ position = "top", fg = beautiful.fg_normal, bg = beautiful.bg_normal })
     -- Add widgets to the wibox - order matters
-    mywibox[s].widgets = { mylauncher,
-                           mytaglist[s],
+    mywibox[s].widgets = { mytaglist[s],
                            mytasklist[s],
                            mypromptbox[s],
 			   separators,
+                           mytextbox,
+                           mylayoutbox[s],
+                           s == 1 and mysystray or nil }
+    mywibox[s].screen = s
+
+    -- Create the status bar
+    mystatusbar[s] = wibox({ position = "bottom", fg = beautiful.fg_normal, bg = beautiful.bg_normal })
+    mystatusbar[s].widgets = {mylauncher,
+	    		      mpdwidget,
 			   wifiwidget,
 			   separator,
 			   cpu0graphwidget,
@@ -354,14 +365,6 @@ for s = 1, screen.count() do
 			   separator,
 			   memwidget,
 			   separator,
-                           mytextbox,
-                           mylayoutbox[s],
-                           s == 1 and mysystray or nil }
-    mywibox[s].screen = s
-
-    -- Create the status bar
-    mystatusbar[s] = wibox({ position = "bottom", fg = beautiful.fg_normal, bg = beautiful.bg_normal })
-    mystatusbar[s].widgets = {mpdwidget,
 			      separator,
 	    		      batterywidget}
     mystatusbar[s].screen = s
@@ -409,6 +412,7 @@ globalkeys =
         end),
 
     -- Standard program
+    -- key({ modkey }, "`", function () dropdown_toggle("urxvt") end),
     key({ modkey,           }, "Return", function () awful.util.spawn(terminal) end),
     key({ modkey }, "w", function() awful.util.spawn("firefox") end),
     key({ modkey }, "i", function() awful.util.spawn("pidgin") end),
@@ -426,19 +430,13 @@ globalkeys =
     key({ modkey, "Shift"   }, "space", function () awful.layout.inc(layouts, -1) end),
 
     -- Prompt
-    key({ modkey }, "F1",
-        function ()
-            awful.prompt.run({ prompt = "Run: " },
-            mypromptbox[mouse.screen],
-            awful.util.spawn, awful.completion.bash,
-            awful.util.getdir("cache") .. "/history")
-        end),
+    key({ modkey }, "r", function () mypromptbox[mouse.screen]:run() end),
 
-    key({ modkey }, "F4",
+    key({ modkey }, "x",
         function ()
             awful.prompt.run({ prompt = "Run Lua code: " },
-            mypromptbox[mouse.screen],
-            awful.util.eval, awful.prompt.bash,
+            mypromptbox[mouse.screen].widget,
+            awful.util.eval, nil,
             awful.util.getdir("cache") .. "/history_eval")
         end),
     -- Mixer & MPD controls
@@ -646,7 +644,7 @@ awful.hooks.timer.register(1, function ()
 	hook_mpd()
 end)
 awful.hooks.timer.register(5, function ()
-	wifiInfo("wlan0")
+--	wifiInfo("wlan0")
 end)
 awful.hooks.timer.register(20, function ()
 	batteryInfo("BAT0")
