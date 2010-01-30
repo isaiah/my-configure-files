@@ -1,0 +1,4 @@
+:colorscheme vividchalk
+:se nu
+set backupdir=~/.vim/backup
+set directory=~/.vim/tmp
