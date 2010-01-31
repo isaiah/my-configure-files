@@ -3,8 +3,8 @@ term screen-256color
 startup_message off
 shell -$SHELL
 # load some apps ( last listed will be focused )
-screen -t spec 0 bash
-screen -t workspace 1 bash
+screen -t spec 0 zsh
+screen -t workspace 1 zsh
 #screen -t mpc 4 ncmpc
 #screen -t email 5 mutt
 hardstatus on
