@@ -422,7 +422,12 @@ globalkeys = awful.util.table.join(
     awful.key({ alt, control }, "space", function () mpd.toggle_play(); hook_mpd() end),
     awful.key({ alt, control }, "s", function () mpd.stop(); hook_mpd() end),
     awful.key({ alt, control }, "h", function () mpd.previous(); hook_mpd() end),
-    awful.key({ alt, control }, "l", function () mpd.next(); hook_mpd() end)
+    awful.key({ alt, control }, "l", function () mpd.next(); hook_mpd() end),
+
+    -- Drop-down Terminal
+    awful.key({ modkey }, "`", function ()
+	    teardrop("urxvt", "bottom", "right", 700, .40, true)
+    end)
 )
 
 clientkeys = awful.util.table.join(
@@ -504,8 +509,12 @@ awful.rules.rules = {
     { rule = { class = "gimp" },
       properties = { floating = true } },
     -- Set Firefox to always map on tags number 2 of screen 1.
-    { rule = { class = "Firefox" },
+    { rule = { class = "Namoroka" },
       properties = { tag = tags[1][2] } },
+    { rule = { class = "Chromium" },
+      properties = { tag = tags[1][3] } },
+    { rule = { class = "Stardict" },
+      properties = { tag = tags[1][5] } },
 }
 -- }}}
 
