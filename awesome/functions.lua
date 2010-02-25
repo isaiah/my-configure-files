@@ -169,7 +169,7 @@ usage_percent = math.floor(diff_active/diff_total*100)
 cpu0_total = total_new
 cpu0_active = active_new
 
-cpu0graphwidget:plot_data_add("cpu",usage_percent)
+cpu0graphwidget:add_value(usage_percent)
 elseif cpu_usage[1] == "cpu1" then
 -- Caculate totals
 total_new = cpu_usage[2]+cpu_usage[3]+cpu_usage[4]+cpu_usage[5]
@@ -182,8 +182,8 @@ usage_percent = math.floor(diff_active/diff_total*100)
 cpu1_total = total_new
 cpu1_active = active_new
 
-cpu1graphwidget:plot_data_add("cpu",usage_percent)
-
+-- cpu1graphwidget:add_value(usage_percent)
+cpu1graphwidget:add_value(usage_percent)
 end
 
 end
