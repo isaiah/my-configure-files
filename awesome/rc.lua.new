@@ -232,13 +232,10 @@ cpu1graphwidget:set_gradient_colors({ "red", "cyan" })
 cpu1graphwidget:set_gradient_angle(90)
 cpuInfo()
 
+-- }}}
 -- {{{ MEMORY
--- used
 memwidget = widget({ type = "textbox" })
 memInfo()
--- }}}
-
--- {{{ NETWORK
 -- }}}
 
 -- {{{ MPD
@@ -251,7 +248,11 @@ memInfo()
 -- end)
 -- }}}
 
--- }}}
+-- {{{ BATTERY
+batterywidget = widget({ type = "textbox" })
+batteryInfo("BAT0");
+---}}}
+
 -- }}}
 
 -- {{{ Wibox
@@ -342,6 +343,7 @@ for s = 1, screen.count() do
         cpu0graphwidget, spacer_1, cpu1graphwidget, separator,
         memwidget, tab,
 	mpdwidget,
+	batterywidget,
         layout = awful.widget.layout.horizontal.leftright,
         {
             separator, s == 1 and mysystray or nil,
