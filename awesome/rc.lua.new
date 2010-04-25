@@ -553,6 +553,6 @@ client.add_signal("unfocus", function(c) c.border_color = beautiful.border_norma
 
 -- {{{ Timers
 mytimer = timer({ timeout = 1 })
-mytimer:add_signal("timeout", function() hook_mpd() cpuInfo() memInfo() end )
+mytimer:add_signal("timeout", function() hook_mpd() cpuInfo() memInfo() batteryInfo("BAT0") end )
 mytimer:start()
 -- }}}
