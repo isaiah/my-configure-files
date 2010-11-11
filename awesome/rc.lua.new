@@ -8,15 +8,17 @@ require("beautiful")
 require("naughty")
 -- Mpd lib
 require("lib/mpd")
-
+-- Revelation
+require("revelation")
 -- {{{ Load functions
 loadfile(awful.util.getdir("config").."/functions.lua")()
 -- }}}
 
 -- {{{ Variable definition
 -- Themes define colours, icons, and wallpapers
--- beautiful.init("/usr/share/awesome/themes/default/theme.lua")
-beautiful.init(awful.util.getdir("config") .. "/themes/dust/theme.lua")
+-- beautiful.init("/usr/share/awesome/themes/sky/theme.lua")
+-- beautiful.init(awful.util.getdir("config") .. "/themes/dust/theme.lua")
+beautiful.init(awful.util.getdir("config") .. "/themes/sky/theme.lua")
 -- Import custom widgets
 --require("wi")
 -- Import drop-down terminal code
@@ -59,8 +61,8 @@ layouts =
 -- Define a tag table which hold all screen tags.
 tags = {
     names = { "1:W", "2:FF", "3:R", "4:IM", "5:D", "6", "7", "8", "9" },
-    layouts = { layouts[10], layouts[9], layouts[1], layouts[1], layouts[1],
-                layouts[1], layouts[2], layouts[12], layouts[9]}
+    layouts = { layouts[10], layouts[1], layouts[1], layouts[2], layouts[1],
+                layouts[1], layouts[2], layouts[12], layouts[1]}
 }
 for s = 1, screen.count() do
     -- Each screen has its own tag table.
@@ -253,6 +255,11 @@ batterywidget = widget({ type = "textbox" })
 batteryInfo("BAT0");
 ---}}}
 
+-- {{{ WIFI
+wifiwidget = widget({ type= "textbox" })
+wifiInfo("wlan0");
+-- }}}
+
 -- }}}
 
 -- {{{ Wibox
@@ -339,11 +346,12 @@ for s = 1, screen.count() do
     -- Create the graphbox
     mygraphbox[s] = awful.wibox({ position = "bottom", height = 16, screen = s })
     mygraphbox[s].widgets = {
-        mylayoutbox[s], spacer_1, seperator,
+        mylayoutbox[s], spacer_1, separator,
         cpu0graphwidget, spacer_1, cpu1graphwidget, separator,
         memwidget, tab,
 	mpdwidget,
 	batterywidget,
+        wifiwidget,
         layout = awful.widget.layout.horizontal.leftright,
         {
             separator, s == 1 and mysystray or nil,
@@ -429,7 +437,8 @@ globalkeys = awful.util.table.join(
     -- Drop-down Terminal
     awful.key({ modkey }, "`", function ()
 	    teardrop("urxvt", "bottom", "right", 700, .40, true)
-    end)
+    end),
+    awful.key({ modkey }, "e", function() revelation.revelation() end)
 )
 
 clientkeys = awful.util.table.join(
@@ -553,6 +562,10 @@ client.add_signal("unfocus", function(c) c.border_color = beautiful.border_norma
 
 -- {{{ Timers
 mytimer = timer({ timeout = 1 })
-mytimer:add_signal("timeout", function() hook_mpd() cpuInfo() memInfo() batteryInfo("BAT0") end )
+mytimer:add_signal("timeout", function() hook_mpd() cpuInfo() memInfo() batteryInfo("BAT0") wifiInfo("wlan0") end )
 mytimer:start()
 -- }}}
+
+--{{{ Autostart programs
+-- os.execute("nm-applet &")
+--}}}
