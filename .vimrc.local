@@ -1,4 +1,36 @@
-:colorscheme vividchalk
-:se nu
+set t_Co=256
+"colorscheme vividchalk
+colorscheme desert256
+se nu
+se expandtab
 set backupdir=~/.vim/backup
 set directory=~/.vim/tmp
+:set tags=./.tags,.tags,~/codes/.tags
+let g:EclimHome = '/home/isaiah/.vim/eclim'
+let g:EclimEclipseHome = '/home/isaiah/builds/eclipse'
+let g:EclimJavaSearchSingleResult = 'tabnew'
+let g:EclimTaglistEnabled = 1
+if has('gui_running')
+    set guioptions-=T   " Get rid of toolbar "
+    set guioptions-=m   " Get rid of menu    "
+endif
+
+function! CreateCopyrightFold()
+    let InCopyright = 0
+    set foldmethod=manual
+    for Line in range(1,line('$'))
+        let LineContents = getline(Line)
+        if LineContents !~ "\*"
+            if InCopyright
+                let CopyrightEnd = Line - 1
+                exe CopyrightStart . ',' . CopyrightEnd . 'fold'
+            endif
+            break
+        elseif LineContents =~ "Copyright"
+            let InCopyright = 1
+            let CopyrightStart = Line - 1
+        endif
+    endfor
+endfunction
+au BufRead *.java,*.scala call CreateCopyrightFold()
+
