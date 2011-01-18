@@ -5,6 +5,7 @@
   ;; Your init file should contain only one such instance.
   ;; If there is more than one, they won't work right.
  '(ecb-options-version "2.40")
+ '(quack-default-program "mit-scheme")
  '(quack-programs (quote ("mzscheme" "bigloo" "csi" "csi -hygienic" "gosh" "gracket" "gsi" "gsi ~~/syntax-case.scm -" "guile" "kawa" "mit-scheme" "racket" "racket -il typed/racket" "rs" "scheme" "scheme48" "scsh" "sisc" "stklos" "sxi"))))
 (custom-set-faces
   ;; custom-set-faces was added by Custom.
@@ -20,8 +21,8 @@
 (global-linum-mode 1)
 
 ;; dot mode
-(require 'dot-mode)
-(add-hook 'find-file-hooks 'dot-mode-on)
+;(require 'dot-mode)
+;(add-hook 'find-file-hooks 'dot-mode-on)
 
 ;; WholeLineOrRegion
 (defadvice kill-ring-save (before slick-copy activate compile)
@@ -72,4 +73,17 @@ See also `newline-and-indent'."
 (eval-after-load "color-theme"
                  '(progn
                     (color-theme-initialize)
-                    (color-theme-hober)))
+                    (color-theme-gnome)))
+(add-to-list 'load-path "/usr/share/emacs/site-lisp/highlight-parentheses.el")
+(require 'highlight-parentheses)
+(setq hl-paren-colors
+      '(;"#8f8f8f" ; this comes from Zenburn
+                   ; and I guess I'll try to make the far-outer parens look like this
+        "orange1" "yellow1" "greenyellow" "green1"
+        "springgreen1" "cyan1" "slateblue1" "magenta1" "purple"))
+
+(add-hook 'scheme-mode-hook (lambda () (highlight-parentheses-mode +1)))
+(add-hook 'scheme-mode-hook (lambda () (show-paren-mode +1)))
+(setq viper-mode t)
+(require 'viper)
+
