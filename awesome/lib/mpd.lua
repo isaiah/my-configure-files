@@ -95,7 +95,7 @@ end
 function volume_up(delta)
   local stats = send("status")
   local new_volume = tonumber(stats.volume) + delta
-  if new_volume >= 0 and new_volume =< 100 then
+  if new_volume >= 0 and new_volume <= 100 then
     send(string.format("setvol %d", new_volume))
   end
 end
