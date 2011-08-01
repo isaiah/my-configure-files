@@ -1,3 +1,4 @@
+-- {{{ Load libraries 
 -- Standard awesome library
 require("awful")
 require("awful.autofocus")
@@ -10,8 +11,11 @@ require("naughty")
 require("lib/mpd")
 -- Revelation
 require("revelation")
+-- }}}
+
 -- {{{ Load functions
 loadfile(awful.util.getdir("config").."/functions.lua")()
+loadfile(awful.util.getdir("config").."/lib/orglendar.lua")()
 -- }}}
 
 -- {{{ Variable definition
@@ -26,7 +30,7 @@ require("teardrop")
 
 -- This is used later as the default terminal and editor to run.
 browser = "firefox"
-terminal = "urxvt"
+terminal = "xterm"
 editor = os.getenv("EDITOR") or "nano"
 editor_cmd = terminal .. " -e " .. editor
 
@@ -250,21 +254,13 @@ memInfo()
 -- end)
 -- }}}
 
--- {{{ BATTERY
-batterywidget = widget({ type = "textbox" })
-batteryInfo("BAT0");
----}}}
-
--- {{{ WIFI
-wifiwidget = widget({ type= "textbox" })
-wifiInfo("wlan0");
--- }}}
-
 -- }}}
 
 -- {{{ Wibox
 -- Create a textclock widget
 mytextclock = awful.widget.textclock({}, "<span color='#d6d6d6'>%a, %m/%d</span> @ %l:%M %p ")
+orglendar.files = {"/home/isaiah/.org/tasks.org"}
+orglendar.register(mytextclock)
 
 -- Create a systray
 mysystray = widget({ type = "systray" })
@@ -344,20 +340,20 @@ for s = 1, screen.count() do
     }
 
     -- Create the graphbox
-    mygraphbox[s] = awful.wibox({ position = "bottom", height = 16, screen = s })
-    mygraphbox[s].widgets = {
-        mylayoutbox[s], spacer_1, separator,
-        cpu0graphwidget, spacer_1, cpu1graphwidget, separator,
-        memwidget, tab,
-	mpdwidget,
-	batterywidget,
-        wifiwidget,
-        layout = awful.widget.layout.horizontal.leftright,
-        {
-            separator, s == 1 and mysystray or nil,
-            layout = awful.widget.layout.horizontal.rightleft
-        }
-    }
+    if s == 1 then
+            mygraphbox[s] = awful.wibox({ position = "bottom", height = 16, screen = s })
+            mygraphbox[s].widgets = {
+                mylayoutbox[s], spacer_1, separator,
+                cpu0graphwidget, spacer_1, cpu1graphwidget, separator,
+                memwidget, tab,
+                mpdwidget,
+                layout = awful.widget.layout.horizontal.leftright,
+                {
+                    separator, s == 1 and mysystray or nil,
+                    layout = awful.widget.layout.horizontal.rightleft
+                }
+            }
+    end
 end
 
 -- }}}
@@ -436,7 +432,7 @@ globalkeys = awful.util.table.join(
 
     -- Drop-down Terminal
     awful.key({ modkey }, "`", function ()
-	    teardrop("urxvt", "bottom", "right", 700, .40, true)
+	    teardrop("xterm", "bottom", "right", 700, .40, true)
     end),
     awful.key({ modkey }, "e", function() revelation.revelation() end)
 )
@@ -562,7 +558,7 @@ client.add_signal("unfocus", function(c) c.border_color = beautiful.border_norma
 
 -- {{{ Timers
 mytimer = timer({ timeout = 1 })
-mytimer:add_signal("timeout", function() hook_mpd() cpuInfo() memInfo() batteryInfo("BAT0") wifiInfo("wlan0") end )
+mytimer:add_signal("timeout", function() hook_mpd() cpuInfo() memInfo() end )
 mytimer:start()
 -- }}}
 

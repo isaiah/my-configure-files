@@ -65,7 +65,7 @@ theme.titlebar_maximized_button_focus_inactive = "/usr/share/awesome/themes/defa
 theme.titlebar_maximized_button_normal_active = "/usr/share/awesome/themes/default/titlebar/maximized_normal_active.png"
 theme.titlebar_maximized_button_focus_active = "/usr/share/awesome/themes/default/titlebar/maximized_focus_active.png"
 
-theme.wallpaper_cmd = { "awsetbg /home/isaiah/.config/awesome/themes/stxza/background.jpg" }
+theme.wallpaper_cmd = { "awsetbg -u feh /home/isaiah/.config/awesome/themes/stxza/background.jpg" }
 
 theme.layout_fairh      = "/home/isaiah/.config/awesome/themes/dust/layouts/fairhw.png"
 theme.layout_fairv      = "/home/isaiah/.config/awesome/themes/dust/layouts/fairvw.png"
