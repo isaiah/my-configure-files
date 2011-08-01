@@ -1,0 +1,46 @@
+#!/bin/sh
+#breakchars="(){}[],^%$#@\"\";:''|\\"
+#if [ $# -eq 0 ]; then 
+#     exec rlwrap --remember -c -b "$breakchars" \
+#        -f "$HOME"/.clj_completions \
+#         java -cp "$CLOJURE_JAR:$CONTRIB_JAR" clojure.main
+#else
+#     exec java -cp "$CLOJURE_JAR:$CONTRIB_JAR" clojure.main $1 -- "$@"
+#fi
+#exec java -cp "$CLOJURE_JAR:$CONTRIB_JAR:$JLINE_JAR" jline.ConsoleRunner clojure.main
+
+CLOJURE_HOME=/usr/share/clojure
+CLOJURE_JAR="$CLOJURE_HOME"/clojure.jar
+CONTRIB_JAR="$CLOJURE_HOME"/clojure-contrib.jar
+
+CLASSPATH=$CLOJURE_JAR:$CONTRIB_JAR
+if [ $# -eq 0 ] ; then
+    JLINE="/usr/lib/jline/jline.jar"
+    CLASSPATH=$JLINE:$CLASSPATH
+    exec java -cp $CLASSPATH jline.ConsoleRunner clojure.main --repl
+else
+    TMPFILE=""
+    while [ $# -gt 0 ] ; do
+        case "$1" in
+        -cp|-classpath)
+            CLASSPATH=$CLASSPATH:$2
+            shift
+            ;;
+        -e)
+            TMPFILE="/tmp/$(basename $0).$$.tmp"
+            /bin/echo $2 > $TMPFILE
+            ARGS=$TMPFILE
+            break
+            ;;
+        *)
+            ARGS="$ARGS $1"
+            ;;
+        esac
+        shift
+    done
+ 
+    exec java -cp $CLASSPATH clojure.main $ARGS
+    if [ "$TMPFILE" != "" ] ; then
+        rm $TMPFILE
+    fi
+fi

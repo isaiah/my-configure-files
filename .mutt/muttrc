@@ -1,0 +1,130 @@
+set pager_context=1
+set pager_index_lines=6                 #show a mini-index in pager
+set menu_scroll
+set pgp_verify_sig=no                   #dont show pgp in pager
+set status_on_top                       #put status line at top
+set sort=threads                        #sort by message threads in index
+
+set status_format=" %r %b %f %n      Del %d      Msgs %m %l %> (%P)"
+set pager_format="%-10.10i %[!%a %b %d %R]"
+#set date_format="!%H:%M %a %d %b     "
+set date_format="!%a, %b %D, %Y at %I:%M:%S%p %Z"
+set index_format="%4C %Z %[%a, %b%D, %Y at %I:%M%p %Z] %-15.15F %s"
+set folder_format="%2C %t %8s %d %N %f"
+
+set sendmail="/usr/bin/msmtp"
+set use_from=yes
+set from="isaiah.peng@happyelements.com"         #set to your from address
+set realname="Isaiah Peng"
+
+set mbox_type=mbox      # see the wiki, there are 4 to choose from.
+                        # mbox is here a way 'how' to store mails. Below is mbox meant
+                        # as a 'mailbox' where read mails are saved ouf of the
+                        # inbox ($spoolfile).
+
+set spoolfile=+inbox    # incoming mails (~/.mail/inbox)
+set mbox=+archive
+set move=yes
+set record="$HOME/.mail/sent"        #sent mail is saved here
+set postponed = $HOME/.mail/drafts
+set delete=yes                          #delete without prompting
+set include=yes                         #quote msg in reply
+set fast_reply=yes                      #no prompting on reply
+set beep=no                             #no noise
+set markers=no                          #no + on wrapped lines
+set confirmappend=no                    #no prompt for save to =keep
+set to_chars=" +TCF"                    #no L for mail_list
+
+set folder = $HOME/.mail
+mailboxes =inbox
+set alias_file = $HOME/.mutt/aliases     # aliases-file is there
+source ~/.mutt/aliases             # and include all existing aliases
+set query_command="abook --mutt-query '%s'"  # address book
+macro editor ";" \Ct               # bin ; to  Ctrl-t in editor-mode (easier IMO)
+
+
+save-hook .* =keep                      #default mbox to (s)ave mail is =keep
+set mime_forward=yes
+set mime_forward_rest=yes
+
+bind pager h display-toggle-weed        #toggle headers with h key
+
+# side bar patch
+#set sidebar_width=12
+#set sidebar_visible=yes
+#set sidebar_delim='|'
+#set sidebar_sort=yes
+## color of folders with new mail 
+#color sidebar_new yellow default 
+## ctrl-n, ctrl-p to select next, prev folder 
+## ctrl-o to open selected folder 
+#bind index \CP sidebar-prev 
+#bind index \CN sidebar-next 
+#bind index \CO sidebar-open
+#bind pager \CP sidebar-prev 
+#bind pager \CN sidebar-next 
+#bind pager \CO sidebar-open 
+
+# simulate the old url menu
+macro index \cb |urlview\n 'call urlview to extract URLs out of a message'
+macro pager \cb |urlview\n 'call urlview to extract URLs out of a message'
+
+#run fetchmail by hitting key of G
+#macro index G "!fetchmail -a -m 'procmail -d %T'\r"
+#macro pager G "!fetchmail -a -m 'procmail -d %T'\r"
+#run getmail by hitting key of G
+macro index G "!getmail -n\r"
+macro pager G "!getmail -n\r"
+
+#use to edit .muttrc and then source it...no restart necessary
+#macro generic ,sm ":source $HOME/.muttrc\r"
+#macro generic \cj "!rxvt -bg wheat -e isaiah $HOME/.muttrc\r"
+
+# default list of header fields to weed out when displaying mail
+#ignore them all and then unignore what you want to see
+ignore *
+unignore  Date To Cc From Subject X-Mailer Organization User-Agent
+hdr_order Date From To Cc Subject X-Mailer User-Agent Organization
+
+##your Mutt has to have some colors
+##these are for four levels of quoted text
+##they override the system settings in /etc/mutt/Muttrc
+
+#color quoted green  default
+color quoted1 magenta blue
+#color quoted2 yellow default
+#color quoted3 red default
+#color signature cyan cyan
+
+
+#this color setup is copied from /etc/mutt/Muttrc.color
+#comment it out if you want the default colors in /etc/mutt/Muttrc
+# Je vois la vie en rose :-)
+color   hdrdefault      brightcyan      blue
+color   header          brightwhite     blue "^from:"
+color   header          brightwhite     blue   "^subject:"
+
+color   quoted          brightgreen     blue
+color   signature       brightwhite     blue
+
+color   indicator       blue            green
+
+color   error           red             black
+mono    error           bold
+color   status          black cyan
+mono    status          bold
+color   tree            yellow          blue
+
+color   tilde           brightmagenta   blue
+color   body            brightwhite     blue    "[-a-z_0-9.]+@[-a-z_0-9.]+"
+mono    body            bold                    "[-a-z_0-9.]+@[-a-z_0-9.]+"
+color   body            brightyellow    black   "^Good signature"
+mono    body            bold                    "^Good signature"
+color   body            brightwhite     red     "^Bad signature from.*"
+mono    body            bold                    "^Bad signature from.*"
+color   normal          white           blue
+color   message         green           black
+color   attachment      brightgreen     blue
+
+# End of file...but it can go on and on and on....:)
+
