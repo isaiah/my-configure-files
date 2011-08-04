@@ -1,5 +1,6 @@
+!## URXVT {{{
 URxvt*font:		-*-terminus-medium-r-*-*-*-150-*-*-*-*-*-*
-#URxvt*font:		xft:LiHei Pro:pixelsize=13  
+!URxvt*font:		xft:LiHei Pro:pixelsize=13  
 URxvt*imFont:		-*-terminus-medium-r-*-*-*-140-*-*-*-*-*-*
 URxvt*boldFont:		-*-terminus-medium-r-*-*-*-140-*-*-*-*-*-*
 URxvt*cursorBlink:	true
@@ -18,25 +19,106 @@ URxvt*scrollColor:	#202020
 URxvt*perl-ext-common:	default,matcher
 URxvt*matcher.button:	3
 URxvt*urlLauncher:	chromium
+!}}}
 
-xterm*geometry:           84x28
-#xterm*faceName:           terminusbold:pixelsize=14
+!## XTERM {{{1
+XTerm.background:        #000000
+XTerm.foreground:        #aaaaaa
+XTerm*utf8:              1
+XTerm.VT100.background:  gray25
+XTerm.VT100.foreground:  gray85
+XTerm.termName:    xterm-256color
+XTerm*ttyModes:    start ^- stop ^-
+XTerm*boldMode:    false
+XTerm*scrollBar:   false
+!XTerm*backarrowKey: false
+XTerm*colorBDMode: true
+XTerm*colorBD:     #ffffff
+XTerm*cursorColor: #c0c090
+XTerm*visualBell: true
+XTerm*eightBitInput: false
+XTerm*modifyCursorKeys: 2
+XTerm*trimSelection: true
+XTerm*CharClass: 33:48,37-38:48,45-47:48,58:48,61:48,63-64:48,126:48,161-255:48
+XTerm*activeIcon: true
+XTerm.VT100.translations: #override \
+	Ctrl<Key>comma: smaller-vt-font() \n\
+	Ctrl<Key>period: larger-vt-font() \n\
+	Ctrl<Key>9: scroll-forw(1,page-1) \n\
+	Ctrl<Key>0: scroll-back(1,page-1) \n\
+	<Key>XF86Back: string(0x1b) string("[1;2D") \n\
+	<Key>XF86Forward: string(0x1b) string("[1;2C") \n\
+	<Key>leftanglebracket: string(0x1b) string("[1;2D") \n\
+	<Key>rightanglebracket: string(0x1b) string("[1;2C")
+XTerm*color0:  #000000
+XTerm*color1:  #aa0000
+XTerm*color2:  #00aa00
+XTerm*color3:  #aa5522
+XTerm*color4:  #0000aa
+XTerm*color5:  #aa00aa
+XTerm*color6:  #00aaaa
+XTerm*color7:  #aaaaaa
+XTerm*color8:  #555555
+XTerm*color9:  #ff4444
+XTerm*color10: #44ff44
+XTerm*color11: #ffff00
+XTerm*color12: #4444ff
+XTerm*color13: #ff00ff
+XTerm*color14: #00ffff
+XTerm*color15: #ffffff
+
+
+!xterm*geometry:           84x28
+!xterm*faceName:           terminusbold:pixelsize=14
 xterm*font:		  -*-terminus-medium-r-*-*-*-200-*-*-*-*-*-*
 XTerm*wideFont: -misc-fixed-medium-r-normal-*-18-120-100-100-c-180-iso10646-1
 
-!xterm*font:             -*-dina-medium-r-*-*-16-*-*-*-*-*-*-*
-xterm*dynamicColors:      true
-xterm*utf8:               1
-xterm*eightBitInput:      true
-xterm*saveLines:          512
-xterm*scrollTtyKeypress:  true
-xterm*scrollTtyOutput:    false
-xterm*scrollBar:          true
-xterm*rightScrollBar:     true
-xterm*jumpScroll:         true
-xterm*multiScroll:        true
-xterm*toolBar:            false
-xterm*background:         gray25
-xterm*foreground:         gray85
-xterm*scrollBar:          false
-#xterm*scrollColor:        #202020
+!!xterm*font:             -*-dina-medium-r-*-*-16-*-*-*-*-*-*-*
+!xterm*dynamicColors:      true
+!xterm*utf8:               1
+!xterm*eightBitInput:      true
+!xterm*saveLines:          512
+!xterm*scrollTtyKeypress:  true
+!xterm*scrollTtyOutput:    false
+!xterm*scrollBar:          true
+!xterm*rightScrollBar:     true
+!xterm*jumpScroll:         true
+!xterm*multiScroll:        true
+!xterm*toolBar:            false
+!xterm*background:         gray25
+!xterm*foreground:         gray85
+!XTerm*metaSendsEscape: true
+!XTerm*eightBitInput: false
+!xterm*VT100.Translations:	#override \
+!	<Key>Delete: string(0x04) \n\
+!	<Key>BackSpace: string(0x7F)
+!XTerm*ttyModes: erase ^?
+!xterm*scrollColor:        #202020
+
+!Xcursor.theme:          redglass
+! }}}
+
+!## Emacs {{{
+Emacs.toolBar: False
+Emacs.Foreground: wheat
+Emacs.Background: darkslategrey
+Emacs.menu.attributeForeground: wheat
+Emacs.menu.attributeBackground: darkslategrey
+!Emacs.cursorColor: Darkgrey
+! modeline
+Emacs.mode-line.attributeForeground: white
+Emacs.mode-line.attributeBackground: grey15
+Emacs.modeline.attributeForeground: white
+Emacs.modeline.attributeBackground: grey15
+! selection
+Emacs.region.attributeBackground: lightblue
+Emacs.region.attributeForeground: darkslategrey
+Emacs.primary-selection.attributeBackground: blue
+Emacs.secondary-selection.attributeBackground: darkslateblue
+Emacs.show-paren-match-face.attributeBackground: Aquamarine
+Emacs.show-paren-match-face.attributeForeground: SlateBlue
+Emacs.show-paren-mismatch-face.attributeBackground: Red
+Emacs.show-paren-mismatch-face.attributeForeground: White
+Emacs.title: emacs
+
+! }}}

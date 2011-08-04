@@ -1,3 +1,11 @@
+(add-to-list 'load-path "~/.emacs.d/")
+(require 'package)
+(add-to-list 'package-archives
+	     '("marmalade" . "http://marmalade-repo.org/packages/"))
+(package-initialize)
+
+(tool-bar-mode 0)
+(scroll-bar-mode nil)
 (require 'quack)
 (custom-set-variables
   ;; custom-set-variables was added by Custom.
@@ -5,8 +13,9 @@
   ;; Your init file should contain only one such instance.
   ;; If there is more than one, they won't work right.
  '(ecb-options-version "2.40")
- '(quack-default-program "mit-scheme")
- '(quack-programs (quote ("mzscheme" "bigloo" "csi" "csi -hygienic" "gosh" "gracket" "gsi" "gsi ~~/syntax-case.scm -" "guile" "kawa" "mit-scheme" "racket" "racket -il typed/racket" "rs" "scheme" "scheme48" "scsh" "sisc" "stklos" "sxi"))))
+ '(quack-default-program "mzscheme")
+ '(quack-programs (quote ("mzscheme" "bigloo" "csi" "csi -hygienic" "gosh" "gracket" "gsi" "gsi ~~/syntax-case.scm -" "guile" "kawa" "mit-scheme" "racket" "racket -il typed/racket" "rs" "scheme" "scheme48" "scsh" "sisc" "stklos" "sxi")))
+ '(quack-run-scheme-always-prompts-p nil))
 (custom-set-faces
   ;; custom-set-faces was added by Custom.
   ;; If you edit it by hand, you could mess it up, so be careful.
@@ -73,7 +82,7 @@ See also `newline-and-indent'."
 (eval-after-load "color-theme"
                  '(progn
                     (color-theme-initialize)
-                    (color-theme-gnome)))
+                    (color-theme-gnome2)))
 (add-to-list 'load-path "/usr/share/emacs/site-lisp/highlight-parentheses.el")
 (require 'highlight-parentheses)
 (setq hl-paren-colors
@@ -85,5 +94,26 @@ See also `newline-and-indent'."
 (add-hook 'scheme-mode-hook (lambda () (highlight-parentheses-mode +1)))
 (add-hook 'scheme-mode-hook (lambda () (show-paren-mode +1)))
 (setq viper-mode t)
+(defalias 'yes-or-no-p 'y-or-n-p)
 (require 'viper)
-
+; org-mode
+(require 'org-install)
+(setq org-agenda-files (list "~/.org/tasks.org"))
+(add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
+(define-key global-map "\C-cl" 'org-store-link)
+(define-key global-map "\C-ca" 'org-agenda)
+(setq org-log-done t)
+(add-to-list 'load-path "/usr/share/emacs/scala-mode")
+(require 'scala-mode-auto)
+(add-hook 'scala-mode-hook
+          '(lambda ()
+             (scala-mode-feature-electric-mode)
+             ))
+(add-to-list 'load-path "/home/isaiah/builds/ensime_2.8.1-0.4.1/elisp/")
+(require 'ensime)
+(add-hook 'scala-mode-hook 'ensime-scala-mode-hook)
+; slime
+(add-to-list 'load-path "/usr/share/emacs/site-lisp/slime/")
+(require 'slime)
+(eval-after-load 'slime '(setq slime-protocol-version 'ignore))
+(slime-setup '(slime-repl))
