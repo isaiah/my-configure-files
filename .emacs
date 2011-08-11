@@ -12,7 +12,10 @@
   ;; If you edit it by hand, you could mess it up, so be careful.
   ;; Your init file should contain only one such instance.
   ;; If there is more than one, they won't work right.
+ '(ecb-layout-name "left14")
+ '(ecb-layout-window-sizes (quote (("left14" (ecb-directories-buffer-name 0.25380710659898476 . 0.72) (ecb-history-buffer-name 0.25380710659898476 . 0.26)))))
  '(ecb-options-version "2.40")
+ '(ecb-default-directory "/home/isaiah")
  '(quack-default-program "mzscheme")
  '(quack-programs (quote ("mzscheme" "bigloo" "csi" "csi -hygienic" "gosh" "gracket" "gsi" "gsi ~~/syntax-case.scm -" "guile" "kawa" "mit-scheme" "racket" "racket -il typed/racket" "rs" "scheme" "scheme48" "scsh" "sisc" "stklos" "sxi")))
  '(quack-run-scheme-always-prompts-p nil))
@@ -28,6 +31,11 @@
 (require 'ecb-autoloads)
 (setq linum-format "%d ")
 (global-linum-mode 1)
+;; ido mode
+(require 'ido)
+(setq ido-enable-flex-matching t)
+(setq ido-everywhere t)
+(ido-mode 1)
 
 ;; dot mode
 ;(require 'dot-mode)
@@ -83,6 +91,7 @@ See also `newline-and-indent'."
                  '(progn
                     (color-theme-initialize)
                     (color-theme-gnome2)))
+
 (add-to-list 'load-path "/usr/share/emacs/site-lisp/highlight-parentheses.el")
 (require 'highlight-parentheses)
 (setq hl-paren-colors
@@ -91,11 +100,15 @@ See also `newline-and-indent'."
         "orange1" "yellow1" "greenyellow" "green1"
         "springgreen1" "cyan1" "slateblue1" "magenta1" "purple"))
 
-(add-hook 'scheme-mode-hook (lambda () (highlight-parentheses-mode +1)))
+; (add-hook 'scheme-mode-hook (lambda () (highlight-parentheses-mode +1)))
+(add-hook 'scheme-mode-hook (lambda () (paredit-mode +1)))
+(add-hook 'clojure-mode-hook (lambda () (paredit-mode +1)))
+; (add-hook 'clojure-mode-hook (lambda () (set (make-local-variable 'ffip-regexp) ".*\\.clj")))
 (add-hook 'scheme-mode-hook (lambda () (show-paren-mode +1)))
-(setq viper-mode t)
+;(setq viper-mode t)
 (defalias 'yes-or-no-p 'y-or-n-p)
-(require 'viper)
+;(require 'viper)
+(require 'vimpulse)
 ; org-mode
 (require 'org-install)
 (setq org-agenda-files (list "~/.org/tasks.org"))
@@ -117,3 +130,9 @@ See also `newline-and-indent'."
 (require 'slime)
 (eval-after-load 'slime '(setq slime-protocol-version 'ignore))
 (slime-setup '(slime-repl))
+;;; backup/autosave
+(defvar backup-dir (expand-file-name "~/.emacs.d/backup/"))
+(defvar autosave-dir (expand-file-name "~/.emacs.d/autosave/"))
+(setq backup-directory-alist (list (cons ".*" backup-dir)))
+(setq auto-save-list-file-prefix autosave-dir)
+(setq auto-save-file-name-transforms `((".*" ,autosave-dir t)))
