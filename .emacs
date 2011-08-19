@@ -90,7 +90,7 @@ See also `newline-and-indent'."
 (eval-after-load "color-theme"
                  '(progn
                     (color-theme-initialize)
-                    (color-theme-gnome2)))
+                    (color-theme-tangotango)))
 
 (add-to-list 'load-path "/usr/share/emacs/site-lisp/highlight-parentheses.el")
 (require 'highlight-parentheses)
@@ -103,6 +103,7 @@ See also `newline-and-indent'."
 ; (add-hook 'scheme-mode-hook (lambda () (highlight-parentheses-mode +1)))
 (add-hook 'scheme-mode-hook (lambda () (paredit-mode +1)))
 (add-hook 'clojure-mode-hook (lambda () (paredit-mode +1)))
+(add-hook 'slime-repl-mode-hook (lambda () (paredit-mode +1)))
 ; (add-hook 'clojure-mode-hook (lambda () (set (make-local-variable 'ffip-regexp) ".*\\.clj")))
 (add-hook 'scheme-mode-hook (lambda () (show-paren-mode +1)))
 ;(setq viper-mode t)
@@ -136,3 +137,4 @@ See also `newline-and-indent'."
 (setq backup-directory-alist (list (cons ".*" backup-dir)))
 (setq auto-save-list-file-prefix autosave-dir)
 (setq auto-save-file-name-transforms `((".*" ,autosave-dir t)))
+(set-default-font "terminus-14")
