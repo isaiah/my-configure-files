@@ -4,6 +4,7 @@ alias y="yaourt"
 alias m="mutt -yZ"
 alias ncmpc="ncmpcpp"
 alias fm="vifm"
+#alias emacs="emacs -nw"
 export GNOME_DESKTOP_SESSION_ID=Default
 export EC2_HOME=~/.ec2
 export STAX_HOME=~/builds/stax-sdk-0.3.8
@@ -33,7 +34,7 @@ fi
 # For portalbe time output
 TIMEFMT=$'\nreal\t%E\nuser\t%U\nsys\t%S'
 
-PATH=/home/isaiah/.bin:$PATH:$STAX_HOME:$PLAY_HOME:$GAE_HOME/bin:/usr/share/java/apache-ant/bin:/opt/jruby/bin:/home/isaiah/.cabal/bin:/opt/groovy/bin:/opt/ibatis-migrations-3.0.2
+PATH=/home/isaiah/.bin:$PATH:$STAX_HOME:$PLAY_HOME:$GAE_HOME/bin:/usr/share/java/apache-ant/bin:/opt/jruby/bin:/home/isaiah/.cabal/bin:/opt/groovy/bin:/opt/ibatis-migrations-3.0.2:$HOME/.lein/bin
 PYTHONPATH=${PYTHONPATH}:$HOME/builds/gsutil/boto
 
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"

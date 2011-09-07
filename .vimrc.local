@@ -1,11 +1,13 @@
 set t_Co=256
-"colorscheme vividchalk
-colorscheme desert256
+colorscheme vividchalk
+"colorscheme desert
+"colorscheme desert256
+autocmd User Rails let  g:fuzzy_roots = [RailsRoot()]
 se nu
 se expandtab
 set backupdir=~/.vim/backup
 set directory=~/.vim/tmp
-:set tags=./.tags,.tags,~/codes/.tags
+set tags=./.tags,.tags,~/codes/.tags
 let g:EclimHome = '/home/isaiah/.vim/eclim'
 let g:EclimEclipseHome = '/home/isaiah/builds/eclipse'
 let g:EclimJavaSearchSingleResult = 'tabnew'
@@ -28,9 +30,11 @@ function! CreateCopyrightFold()
             break
         elseif LineContents =~ "Copyright"
             let InCopyright = 1
-            let CopyrightStart = Line - 1
+            let CopyrightStart = Line - 2
         endif
     endfor
 endfunction
 au BufRead *.java,*.scala call CreateCopyrightFold()
 
+map <silent> <F2> :!ctags -f .tags -R<CR>
+let g:VMPhtmlreader = 'chromium'

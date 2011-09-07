@@ -19,6 +19,7 @@ URxvt*scrollColor:	#202020
 URxvt*perl-ext-common:	default,matcher
 URxvt*matcher.button:	3
 URxvt*urlLauncher:	chromium
+URxvt*termName: rxvt-256color
 !}}}
 
 !## XTERM {{{1
@@ -87,7 +88,7 @@ XTerm*wideFont: -misc-fixed-medium-r-normal-*-18-120-100-100-c-180-iso10646-1
 !xterm*toolBar:            false
 !xterm*background:         gray25
 !xterm*foreground:         gray85
-!XTerm*metaSendsEscape: true
+XTerm*metaSendsEscape: true
 !XTerm*eightBitInput: false
 !xterm*VT100.Translations:	#override \
 !	<Key>Delete: string(0x04) \n\

@@ -84,6 +84,12 @@
 ;        "springgreen1" "cyan1" "slateblue1" "magenta1" "purple"))
 
 ; (add-hook 'scheme-mode-hook (lambda () (highlight-parentheses-mode +1)))
+<<<<<<< HEAD
+=======
+(add-hook 'scheme-mode-hook (lambda () (paredit-mode +1)))
+(add-hook 'clojure-mode-hook (lambda () (paredit-mode +1)))
+(add-hook 'slime-repl-mode-hook (lambda () (paredit-mode +1)))
+>>>>>>> 6611075ac1c96e23529662d6b5d14e1dda461f8a
 ; (add-hook 'clojure-mode-hook (lambda () (set (make-local-variable 'ffip-regexp) ".*\\.clj")))
 (add-hook 'scheme-mode-hook 
             (lambda () 
@@ -117,6 +123,7 @@
 (setq backup-directory-alist (list (cons ".*" backup-dir)))
 (setq auto-save-list-file-prefix autosave-dir)
 (setq auto-save-file-name-transforms `((".*" ,autosave-dir t)))
+<<<<<<< HEAD
 
 ; icicles
 (setq load-path (cons "/usr/share/emacs/site-lisp/icicles" load-path))
@@ -174,3 +181,4 @@
 ;(load-file "~/.emacs.d/elpa-to-submit/windata.el")
 ;(load-file "~/.emacs.d/elpa-to-submit/dirtree.el")
 ;(autoload 'dirtree "dirtree" "Add directory to tree view")
+;(set-default-font "terminus-14")
