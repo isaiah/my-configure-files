@@ -1,9 +1,11 @@
+source /etc/Muttrc.gpg.dist
 set pager_context=1
 set pager_index_lines=6                 #show a mini-index in pager
 set menu_scroll
 set pgp_verify_sig=no                   #dont show pgp in pager
 set status_on_top                       #put status line at top
 set sort=threads                        #sort by message threads in index
+set rfc2047_parameters
 
 set status_format=" %r %b %f %n      Del %d      Msgs %m %l %> (%P)"
 set pager_format="%-10.10i %[!%a %b %d %R]"
