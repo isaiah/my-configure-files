@@ -1,22 +1,17 @@
-set t_Co=256
-colorscheme vividchalk
-"colorscheme desert
-"colorscheme desert256
-autocmd User Rails let  g:fuzzy_roots = [RailsRoot()]
+colors blacksea
+set backupdir=~/.vim/backups
+set directory=~/.vim/tmp
 se nu
 se expandtab
-set backupdir=~/.vim/backup
-set directory=~/.vim/tmp
-set tags=./.tags,.tags,~/codes/.tags
-let g:EclimHome = '/home/isaiah/.vim/eclim'
-let g:EclimEclipseHome = '/home/isaiah/builds/eclipse'
-let g:EclimJavaSearchSingleResult = 'tabnew'
-let g:EclimTaglistEnabled = 1
-if has('gui_running')
-    set guioptions-=T   " Get rid of toolbar "
-    set guioptions-=m   " Get rid of menu    "
-endif
+set viewdir=$HOME/.vim/views
+" use ghc functionality for haskell files
+au Bufenter *.hs compiler ghc
+set tags=./.tags,.tags
 
+" configure browser for haskell_doc.vim
+let g:haddock_browser = "/usr/bin/firefox"
+let g:haddock_docdir = "/usr/share/doc/ghc/html/"
+let g:haddock_indexfiledir = "/home/isaiah/.vim/"
 function! CreateCopyrightFold()
     let InCopyright = 0
     set foldmethod=manual
@@ -30,11 +25,12 @@ function! CreateCopyrightFold()
             break
         elseif LineContents =~ "Copyright"
             let InCopyright = 1
-            let CopyrightStart = Line - 2
+            let CopyrightStart = Line - 1
         endif
     endfor
 endfunction
-au BufRead *.java,*.scala call CreateCopyrightFold()
+au BufRead *.clj,*.java,*.scala call CreateCopyrightFold()
 
-map <silent> <F2> :!ctags -f .tags -R<CR>
-let g:VMPhtmlreader = 'chromium'
+map <silent> <F2> : !ctags -f .tags -R<CR>
+
+" :autocmd BufNewFile * silent! 0r $VIMHOME/templates/skel.%:e
